@@ -3,7 +3,7 @@ entries:
   optryn-agent:
   - apiVersion: v2
     appVersion: 1.1.0
-    created: "2025-12-28T03:31:44.223888+05:30"
+    created: "2025-12-28T03:33:53.492604+05:30"
     dependencies:
     - condition: prometheus.enabled
       name: prometheus
@@ -18,7 +18,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-28T03:31:44.221021+05:30"
+    created: "2025-12-28T03:33:53.488605+05:30"
     dependencies:
     - condition: prometheus.enabled
       name: prometheus
@@ -31,4 +31,4 @@ entries:
     urls:
     - https://cloudoneplatform.github.io/Agent-HelmCharts/optryn-agent-0.2.0.tgz
     version: 0.2.0
-generated: "2025-12-28T03:31:44.216096+05:30"
+generated: "2025-12-28T03:33:53.485192+05:30"
