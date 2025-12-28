@@ -4,15 +4,38 @@ image:
   tag: latest
   pullPolicy: Always
 
+# Backend API base URL (kubernetes-service public URL)
 apiBaseUrl: "https://k8s-api-v1.optryn.com"
+
+# Will be set by install command
 clusterId: ""
 agentToken: ""
 
-# RBAC Configuration
+# Namespace + name controls
+namespaceOverride: "optryn-system"
+nameOverride: "optryn-agent"
+fullnameOverride: ""
+
 rbac:
   create: true
 
-# Bundled Prometheus Configuration
+# Optional extra env
+extraEnv: []
+# - name: SCRAPE_INTERVAL_SECONDS
+#   value: "60"
+# - name: HTTP_TIMEOUT_SECONDS
+#   value: "15"
+# - name: LOG_LEVEL
+#   value: "info"
+# - name: PROMETHEUS_URL
+#   value: "http://optryn-agent-prometheus-server.optryn-system.svc:80"
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Bundled Prometheus Configuration (if you are packaging it as a dependency)
 prometheus:
   enabled: true
   server:
