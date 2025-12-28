@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "optryn-agent.fullname" . }}
+  labels:
+    {{- include "optryn-agent.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "optryn-agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "optryn-agent.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "optryn-agent.fullname" . }}
+      containers:
+        - name: agent
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: OPTRYN_API_BASE_URL
+              value: {{ .Values.apiBaseUrl | quote }}
+            - name: OPTRYN_CLUSTER_ID
+              value: {{ .Values.clusterId | quote }}
+            - name: OPTRYN_AGENT_TOKEN
+              value: {{ .Values.agentToken | quote }}
+            - name: OPTRYN_PROMETHEUS_URL
+              value: "http://optryn-agent-prometheus-server"

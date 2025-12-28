@@ -1,0 +1,36 @@
+{{- if .Values.rbac.create -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "optryn-agent.fullname" . }}
+  labels:
+    {{- include "optryn-agent.labels" . | nindent 4 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "optryn-agent.fullname" . }}-role
+rules:
+- apiGroups: [""]
+  resources: ["nodes", "pods", "namespaces", "persistentvolumes", "persistentvolumeclaims"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["batch"]
+  resources: ["jobs", "cronjobs"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "optryn-agent.fullname" . }}-binding
+subjects:
+- kind: ServiceAccount
+  name: {{ include "optryn-agent.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ include "optryn-agent.fullname" . }}-role
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
