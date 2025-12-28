@@ -1,0 +1,32 @@
+# Agent Configuration
+image:
+  repository: asia-south1-docker.pkg.dev/poc-tc/k8s-agent/v1-agent
+  tag: latest
+  pullPolicy: Always
+
+apiBaseUrl: "https://k8s-api-v1.optryn.com"
+clusterId: ""
+agentToken: ""
+
+# RBAC Configuration
+rbac:
+  create: true
+
+# Bundled Prometheus Configuration
+prometheus:
+  enabled: true
+  server:
+    fullnameOverride: "optryn-agent-prometheus-server"
+    persistentVolume:
+      enabled: false
+    global:
+      scrape_interval: 1m
+    retention: "1d"
+  alertmanager:
+    enabled: false
+  pushgateway:
+    enabled: false
+  nodeExporter:
+    enabled: true
+  kubeStateMetrics:
+    enabled: true
