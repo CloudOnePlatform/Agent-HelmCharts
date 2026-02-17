@@ -50,6 +50,6 @@ prometheus:
   pushgateway:
     enabled: false
   nodeExporter:
-    enabled: true
+    enabled: false  # GKE/EKS/AKS already expose node metrics natively
   kubeStateMetrics:
     enabled: true

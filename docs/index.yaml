@@ -3,14 +3,14 @@ entries:
   optryn-agent:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2026-02-17T23:40:58.000439+05:30"
+    created: "2026-02-18T00:08:13.612262+05:30"
     dependencies:
     - condition: prometheus.enabled
       name: prometheus
       repository: https://prometheus-community.github.io/helm-charts
       version: 25.8.0
     description: Optryn Agent with Internal Prometheus and RBAC
-    digest: d8074df3b95cb5dce690392e4388ec17395a1e4804ea3c60160926a261de1ddb
+    digest: 1e909ab11ef810eb73cf1ab514c4851758448414f9eba47052bca74472f8d081
     name: optryn-agent
     type: application
     urls:
@@ -18,7 +18,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2026-02-17T23:40:57.997201+05:30"
+    created: "2026-02-18T00:08:13.609097+05:30"
     dependencies:
     - condition: prometheus.enabled
       name: prometheus
@@ -31,4 +31,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/CloudOnePlatform/Agent-HelmCharts/main/docs/optryn-agent-0.2.2.tgz
     version: 0.2.2
-generated: "2026-02-17T23:40:57.993066+05:30"
+generated: "2026-02-18T00:08:13.604362+05:30"
