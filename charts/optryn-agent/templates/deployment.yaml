@@ -19,6 +19,10 @@ spec:
         - name: agent
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: health
+              containerPort: 8081
+              protocol: TCP
           env:
             - name: OPTRYN_API_BASE_URL
               value: {{ .Values.apiBaseUrl | quote }}
@@ -27,4 +31,27 @@ spec:
             - name: OPTRYN_AGENT_TOKEN
               value: {{ .Values.agentToken | quote }}
             - name: OPTRYN_PROMETHEUS_URL
-              value: "http://optryn-agent-prometheus-server"
+              value: "http://{{ include "optryn-agent.fullname" . }}-prometheus-server"
+            - name: OPTRYN_SCRAPE_INTERVAL_SECONDS
+              value: "60"
+            - name: OPTRYN_LOG_LEVEL
+              value: "info"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: health
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: health
+            initialDelaySeconds: 5
+            periodSeconds: 10

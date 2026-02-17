@@ -2,7 +2,7 @@ apiVersion: v2
 name: optryn-agent
 description: Optryn Agent with Internal Prometheus and RBAC
 type: application
-version: 0.2.2
+version: 0.3.0
 appVersion: "1.0.0"
 
 dependencies:
