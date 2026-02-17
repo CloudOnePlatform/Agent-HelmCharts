@@ -35,7 +35,9 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
-# Bundled Prometheus Configuration (if you are packaging it as a dependency)
+# Bundled Prometheus Configuration
+# Sub-chart keys MUST use kebab-case (matching dependency names in Chart.yaml).
+# camelCase keys like pushgateway/nodeExporter are SILENTLY IGNORED.
 prometheus:
   enabled: true
   server:
@@ -47,9 +49,10 @@ prometheus:
     retention: "1d"
   alertmanager:
     enabled: false
-  pushgateway:
+  # ✅ Correct kebab-case keys for prometheus sub-chart dependencies
+  prometheus-pushgateway:
     enabled: false
-  nodeExporter:
+  prometheus-node-exporter:
     enabled: false  # GKE/EKS/AKS already expose node metrics natively
-  kubeStateMetrics:
-    enabled: true
+  kube-state-metrics:
+    enabled: false  # Not needed — agent collects metrics directly via K8s API
