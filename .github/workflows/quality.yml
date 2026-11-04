@@ -1,0 +1,17 @@
+name: quality
+on:
+  pull_request:
+  push:
+    branches: [main, quality]
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+        with:
+          version: v3.16.2
+      - run: helm lint charts/optryn-agent --set clusterId=c --set agentToken=t
+      - run: bash tests/render_test.sh
