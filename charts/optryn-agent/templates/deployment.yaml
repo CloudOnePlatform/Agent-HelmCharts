@@ -11,14 +11,28 @@ spec:
       {{- include "optryn-agent.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      annotations:
+        # Roll the pod when the token changes.
+        checksum/token: {{ .Values.agentToken | sha256sum | trunc 16 | quote }}
       labels:
         {{- include "optryn-agent.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "optryn-agent.fullname" . }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: agent
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
           ports:
             - name: health
               containerPort: 8081
@@ -29,7 +43,10 @@ spec:
             - name: OPTRYN_CLUSTER_ID
               value: {{ .Values.clusterId | quote }}
             - name: OPTRYN_AGENT_TOKEN
-              value: {{ .Values.agentToken | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingSecret | default (printf "%s-token" (include "optryn-agent.fullname" .)) }}
+                  key: agentToken
             - name: OPTRYN_PROMETHEUS_URL
               value: "http://{{ include "optryn-agent.fullname" . }}-prometheus-server"
             - name: OPTRYN_SCRAPE_INTERVAL_SECONDS

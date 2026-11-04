@@ -10,6 +10,9 @@ apiBaseUrl: "https://k8s-api-v1.optryn.com"
 # Will be set by install command
 clusterId: ""
 agentToken: ""
+# Name of an existing Secret holding the token under key "agentToken".
+# When set, the chart does not create its own Secret.
+existingSecret: ""
 
 # Namespace + name controls
 namespaceOverride: "optryn-system"
